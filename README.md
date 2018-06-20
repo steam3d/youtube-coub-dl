@@ -13,5 +13,5 @@ How to create a program from the source code?
  	* Audio - Downloading best quality audio and convert to mp3
 	* Video - Downloading best quality video and convert to mp4
 	* Au+vi - Downloading 720p video with audio (does not support coub.com links)
-3. Check `~Downloads` folder or click to notification
+3. Check `~/Downloads` folder or click to notification
 
