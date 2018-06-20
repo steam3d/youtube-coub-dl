@@ -15,7 +15,7 @@ Simple program with GUI for downloading videos and audio from coub.com and youtu
 
 ## [Download Easy Downloader](https://github.com/steam3d/youtube-coub-dl-mac/releases)
 
-##How to create a program from source files
+## How to create a program from source files
 To install it use a py2app package
 
 	pip3 install py2app
