@@ -10,6 +10,8 @@ How to create a program from the source code?
 
 1. Copy youtube or coub link
 2. Choose one of the items
-	* Audio - Downloading best quality audio and convert to mp3
+ 	* Audio - Downloading best quality audio and convert to mp3
 	* Video - Downloading best quality video and convert to mp4
 	* Au+vi - Downloading 720p video with audio (does not support coub.com links)
+3. Check Download folder or click to notification
+
