@@ -4,7 +4,7 @@ Simple program with GUI for downloading videos and audio from coub.com and youtu
 ![EasyDownloader Screenshot1](https://github.com/steam3d/youtube-coub-dl-mac/blob/master/ReadmeMedia/1.jpg)
 ![EasyDownloader Screenshot2](https://github.com/steam3d/youtube-coub-dl-mac/blob/master/ReadmeMedia/2.jpg)
 
-##How it works
+## How it works
 
 1. Copy youtube or coub link
 2. Choose one of the items
@@ -24,7 +24,7 @@ From folder with source code run a command
 
 	python3 setup.py py2app
 
-##What packages were used
+## What packages were used
 
 * [pyperclip](https://github.com/asweigart/pyperclip)
 * [rumps](https://github.com/jaredks/rumps)
