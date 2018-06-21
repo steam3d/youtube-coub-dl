@@ -13,12 +13,16 @@ Simple program with GUI for downloading videos and audio from coub.com and youtu
 	* Au+vi - Downloading 720p video with audio (does not support coub.com links)
 3. Check `~/Downloads` folder or click on the notification
 
+> This software uses libraries from the FFmpeg project under the LGPLv2.1
+
 ## [Download Easy Downloader](https://github.com/steam3d/youtube-coub-dl-mac/releases)
 
 ## How to create a program from source files
 To install it use a py2app package
 
 	pip3 install py2app
+
+Download [ffmpeg](https://www.ffmpeg.org/) and put it to folder with source
 
 From folder with source code run a command
 
