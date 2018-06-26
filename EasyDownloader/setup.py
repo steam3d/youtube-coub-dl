@@ -12,8 +12,8 @@ OPTIONS = {
         'CFBundleDisplayName': APP_NAME,
         'CFBundleGetInfoString': "Download from Youtube",
         'CFBundleIdentifier': "com.steam3d.osx.ed",
-        'CFBundleVersion': "0.0.1",
-        'CFBundleShortVersionString': "0.0.3",
+        'CFBundleVersion': "0.0.7",
+        'CFBundleShortVersionString': "0.0.7",
         'NSHumanReadableCopyright': u"The program is written by Alexander Maslov"        
     },
     'packages': ['rumps','pync'],

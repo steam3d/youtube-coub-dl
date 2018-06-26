@@ -30,7 +30,7 @@ def predl(opts,file_type,sender,self,status):
     if m == 0: self.icon = ffmpegPath+'/tray.png'
     
 def start(self,sender,status,opts,file_type):
-    if sender.title != menu[0]:#cancel        
+    if sender.title != menu[0][0]:#cancel does not work
         sender.btn = sender.title
         sender.title= menu[0][0]
         self.icon = ffmpegPath+'/traydl.png'
