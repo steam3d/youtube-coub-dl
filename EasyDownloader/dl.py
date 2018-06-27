@@ -1,10 +1,18 @@
 from __future__ import unicode_literals
-import youtube_dl, os, time
+import youtube_dl, os
 
 msg = ''
 def prnt (msg):
     pass
     #print(bytes(msg, 'utf-8'))
+
+def fastcheckcb(cb):
+    if cb == None: cb='None'
+    if ('https://youtu.be/' in cb) or ('https://www.youtube.com/' in cb) or ('https://coub.com/' in cb):
+        error = 0
+    else:
+        error = 1
+    return error
 
 def coubFix(fn): #Fix for coub video
     path = os.getcwd() + '/' + fn #dangerous decision
@@ -67,5 +75,17 @@ def dl(cb,ffmpegPath,opts):
             ydl.download([cb])
             info_dict = ydl.extract_info(cb, download=False)
             fn = ydl.prepare_filename(info_dict)
+
+            loop = 0
+            while (fn[-1:] != '.') and (loop !=10):
+                fn = fn[:-1]
+                loop = loop+1
+            if loop == 10:
+                fn = ''
+            else:
+                if opts == 'mp3':
+                    fn = fn + 'mp3'
+                else:
+                    fn = fn + 'mp4'    
     if ('https://coub.com/' in cb) and ('mp4' in opts): coubFix(fn) 
     return fn

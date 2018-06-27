@@ -10,10 +10,10 @@ OPTIONS = {
         'LSUIElement': True,
         'CFBundleName': APP_NAME,
         'CFBundleDisplayName': APP_NAME,
-        'CFBundleGetInfoString': "Download from Youtube",
+        'CFBundleGetInfoString': "Download from Youtube and Coub",
         'CFBundleIdentifier': "com.steam3d.osx.ed",
-        'CFBundleVersion': "0.0.7",
-        'CFBundleShortVersionString': "0.0.7",
+        'CFBundleVersion': "0.1.0",
+        'CFBundleShortVersionString': "0.1.0",
         'NSHumanReadableCopyright': u"The program is written by Alexander Maslov"        
     },
     'packages': ['rumps','pync'],
