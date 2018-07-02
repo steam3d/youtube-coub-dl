@@ -15,10 +15,9 @@ def fastcheckcb(cb):
     return error
 
 def coubFix(fn): #Fix for coub video
-    path = os.getcwd() + '/' + fn #dangerous decision
-    with open(path,'rb') as f:
+    with open(fn,'rb') as f:
         data = f.read()
-    with open(path, 'wb') as f:
+    with open(fn, 'wb') as f:
         f.write(b'\x00\x00' + data[2:])
 
 def dl(cb,ffmpegPath,opts,dlPath):
@@ -100,5 +99,7 @@ if __name__ == "__main__":
     ffmpegPath = os.getcwdb().decode("utf-8")
     cb = 'https://www.youtube.com/watch?v=zZohSJyYknY'
     print(dl(cb,ffmpegPath,'mp4+mp3',dlPath))
-    print(dl(cb,ffmpegPath,'mp4+mp3',dlPath))
+    cb = 'https://coub.com/view/1aa6m1'
+    print(dl(cb,ffmpegPath,'mp4',dlPath))
+    
 

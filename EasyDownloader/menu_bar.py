@@ -66,8 +66,8 @@ def on_clicked(icon,status,opts):
         complete(icon,status)
         
         cb = pyperclip.paste()
-        
         #cb = 'https://www.youtube.com/watch?v=COwlqqErDbY'
+        #cb = 'https://coub.com/view/1ade1p'
         error = dl.fastcheckcb(cb)
         if error == 0:
             Thread(target=predl, args=(icon,opts,status,cb)).start()
