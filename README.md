@@ -1,4 +1,4 @@
-# youtube-coub-dl-mac
+# youtube-coub-dl
 Simple script with GUI for downloading videos and audio from coub.com and youtube.com for mac, windows and linux.
 Easy downloader has standalone app for mac. For windows and linux there is only a python script.
 
