@@ -28,7 +28,7 @@ From folder with source code run a command
 
 	python3 setup.py py2app
 
-##Hot to run script from python
+## Hot to run script from python
 
 Base GUI	
 	
