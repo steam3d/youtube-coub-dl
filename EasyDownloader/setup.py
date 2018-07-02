@@ -12,11 +12,11 @@ OPTIONS = {
         'CFBundleDisplayName': APP_NAME,
         'CFBundleGetInfoString': "Download from Youtube and Coub",
         'CFBundleIdentifier': "com.steam3d.osx.ed",
-        'CFBundleVersion': "0.1.0",
-        'CFBundleShortVersionString': "0.1.0",
+        'CFBundleVersion': "0.1.1",
+        'CFBundleShortVersionString': "0.1.1",
         'NSHumanReadableCopyright': u"The program is written by Alexander Maslov"        
     },
-    'packages': ['rumps','pync'],
+    'packages': ['pystray','pync'],
 }
 
 setup(

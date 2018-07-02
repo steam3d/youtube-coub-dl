@@ -1,75 +1,96 @@
-import pync, os, pyperclip, dl, sys
+import pystray, os, pyperclip, dl, sys
+from PIL import Image
+from pystray import Icon, Menu as menu, MenuItem as item
 from threading import Thread
-from rumps import *
 
-menu = [['Cancel',0],['Audio',0],['Video',0],['Au+vi',0]]
-path = '~/Downloads'
-ffmpegPath = os.getcwdb().decode("utf-8")   #program folder path for icons and ffmpeg
-os.chdir(os.path.expanduser(path)) #download folder path
+dlPath =iconPath = ffmpegPath = os.getcwdb().decode("utf-8") #deafult ffmpeg path is folder with app
+fnMask = '/%(title)s-%(id)s.%(ext)s'
+menuItems = ['Quit','Cancel',['Audio','mp3',0,'Audio'],['Video','mp4',0,'Video'],['Au+vi','mp4+mp3',0,'Au+vi']]
 
-def complete(self,sender,status):
-    if sender.title != menu[0][0]:
-        sender.btn = sender.title
-        sender.state = 1
-        sender.title= menu[0][0]
-        menu[status][1] = 1
-        self.icon = ffmpegPath+'/traydl.png'      
+def pasteClipboard(): #linux has a problem with pyperclip. Need to use the xclip. #sudo apt-get install xclip
+    cb = subprocess.Popen('xclip -selection clipboard -out',shell=True,stdout = subprocess.PIPE)    
+    return cb.stdout.read().decode("utf-8")
+
+if sys.platform == 'darwin':
+    from mac_notification import notification
+    traydl = '/traydl.png'
+    tray = '/tray.png'
+    dlPath = os.path.expanduser('~/Downloads')
+if sys.platform == 'win32':
+    from win_notification import notification 
+    traydl = '/wintraydl.png'
+    tray = '/wintray.png'
+if sys.platform == 'linux':
+    from linux_notification import notification
+    import subprocess
+    pyperclip.paste = pasteClipboard
+    traydl = '/wintraydl.png'
+    tray = '/wintray.png'
+    ffmpegPath = '/usr/bin/ffmpeg'   #program folder path for icons and ffmpeg
+
+#def notification(title,text,execute):
+#   pass
+        
+def complete(icon,status):
+    global menuItems
+    if  menuItems[status][0] != menuItems[1]:
+        menuItems[status][3] = menuItems[status][0]
+        menuItems[status][2] = 1 #icon on btn
+        menuItems[status][0]= menuItems[1]
+        icon.icon = Image.open(iconPath+traydl)      
     else:
-        sender.state = 0
-        sender.title = sender.btn
-        menu[status][1] = 0
+        menuItems[status][2] = 0
+        menuItems[status][0] = menuItems[status][3]
         m = 0
-        for i in menu:
-            if i[1] == 1: m = 1
-        if m == 0: self.icon = ffmpegPath+'/tray.png'
+        for i in menuItems:
+            if i[2] == 1: m = 1
+        if m == 0: icon.icon = Image.open(iconPath+tray)
+    icon.update_menu()
 
-def restart(): #Try not to use it
-    os.system('open -a "Easy Downloader"')
-
-def predl(opts,sender,self,status,cb):
+def predl(icon, opts, status, cb):
     try:
-        fn = dl.dl(cb,ffmpegPath,opts)
+        fn = dl.dl(cb,ffmpegPath,opts,dlPath+fnMask)
         if fn == '':
-            pync.notify("Can't get file name. Check Donwloads folder", title='Error')        
+            notification(title='Error',text = "Can't get file name. Check Donwloads folder", execute = False)    
         else:
-            pync.notify(fn, title='Download complete',execute="open "+path+"/"+"'"+fn+"'")
-        complete(self,sender,status)
+            fn = fn[len(dlPath)+1:]
+            notification(title='Download complete',text = fn, execute = "open "+dlPath+"/"+"'"+fn+"'")  
+        complete(icon,status)
     except:
-        pync.notify('The clipboard has a broken link', title='Download error')
-        complete(self,sender,status)
+        notification(title='Download error',text = 'The clipboard has a broken link', execute = False)   
+        complete(icon,status)
    
-def start(self,sender,status,opts):
-    if sender.title != menu[0][0]:#cancel does not work
-        complete(self,sender,status)
+def on_clicked(icon,status,opts):
+    global menuItems   
+    if  menuItems[status][0] != menuItems[1]:#cancel does not work
+        complete(icon,status)
         
         cb = pyperclip.paste()
-        error = dl.fastcheckcb(cb)
         
+        #cb = 'https://www.youtube.com/watch?v=COwlqqErDbY'
+        error = dl.fastcheckcb(cb)
         if error == 0:
-            Thread(target=predl, args=(opts,sender,self,status,cb)).start()
+            Thread(target=predl, args=(icon,opts,status,cb)).start()
         else:
-            pync.notify('The clipboard does not have an youtube or coub link', title='Download error')
-            complete(self,sender,status)
+            notification(title='Download error',text = 'The clipboard does not have an youtube or coub link', execute = False)
+            complete(icon,status)
     else:
-        Thread(target=restart, args=()).start()
-        rumps.quit_application()        
+        pass
+        #Thread(target=restart, args=()).start()
+        #rumps.quit_application() 
+    
+def close():
+    icon.stop()
 
-class AwesomeStatusBarApp(rumps.App):
-    @rumps.clicked(menu[1][0])
-    def prefs1(self,sender):
-        start(self,sender,1,'mp3')
-
-    @clicked(menu[2][0])
-    def prefs2(self,sender):
-        start(self,sender,2,'mp4')
-
-    @clicked(menu[3][0])
-    def prefs3(self,sender):
-        if (pyperclip.paste() != None): #Coub does not support Audio + video
-            if ('https://coub.com/' in pyperclip.paste()):
-                pync.notify("Coub does not support "+menu[3][0], title='Error')
-            else:
-                start(self,sender,3,'mp4+mp3')
-
-if __name__ == "__main__":
-    AwesomeStatusBarApp("Easy Downloader",icon=ffmpegPath+'/tray.png').run()
+icon = Icon("name",
+            Image.open(iconPath+tray),
+            "title",
+            menu=menu(
+                    item(lambda title: menuItems[2][0],lambda icon: on_clicked(icon,2,menuItems[2][1]),checked=lambda item: menuItems[2][2]),
+                    item(lambda title: menuItems[3][0],lambda icon: on_clicked(icon,3,menuItems[3][1]),checked=lambda item: menuItems[3][2]),
+                    item(lambda title: menuItems[4][0],lambda icon: on_clicked(icon,4,menuItems[4][1]),checked=lambda item: menuItems[4][2]),
+                    menu.SEPARATOR,
+                    item(lambda title: menuItems[0],close)
+                    )
+            )
+icon.run()
