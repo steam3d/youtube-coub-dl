@@ -1,6 +1,6 @@
 # youtube-coub-dl-mac
 Simple script with GUI for downloading videos and audio from coub.com and youtube.com for mac, windows and linux.
-Easy downloader has standalone app for macю For windows and linux there is only a python script.
+Easy downloader has standalone app for mac. For windows and linux there is only a python script.
 
 ![EasyDownloader Screenshot1](https://github.com/steam3d/youtube-coub-dl-mac/blob/master/ReadmeMedia/1.jpg)
 ![EasyDownloader Screenshot2](https://github.com/steam3d/youtube-coub-dl-mac/blob/master/ReadmeMedia/2.jpg)
