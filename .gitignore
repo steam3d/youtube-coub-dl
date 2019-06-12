@@ -36,3 +36,5 @@ Temporary Items
 /EasyDownloader/settings.ini
 /EasyDownloader/__init__.py
 /EasyDownloader/__pycache__
+/EasyDownloader/build
+/EasyDownloader/dist

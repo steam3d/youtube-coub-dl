@@ -3,18 +3,22 @@ from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 from threading import Thread
 
-# Output settings
-logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
-                    level=logging.ERROR,
-                    filename=os.path.join(os.path.dirname(__file__), 'log.txt'))
 
-sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), 'FilesDate'))
+
+# sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), 'FilesDate'))
 
 dlpath = iconPath = ffmpegpath = os.getcwdb().decode("utf-8")  # deafult ffmpeg path is folder with app
+dlpath = ffmpegpath = iconPath = os.path.join(iconPath, 'data')
 fnMask = '/%(title)s-%(id)s.%(ext)s'
 menuItems = ['Quit', 'Cancel', ['Audio', 'mp3', 0, 'Audio'], ['Video', 'mp4', 0, 'Video'],
              ['Au+vi', 'mp4+mp3', 0, 'Au+vi'], 'Folder']
 fprog = ''  # fix later
+
+# Output settings
+logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                    level=logging.ERROR,
+                    filename=os.path.join(os.path.dirname(__file__), os.path.join(iconPath, 'log.txt')))
+
 def pasteClipboard():  # linux has a problem with pyperclip. Need to use the xclip. #sudo apt-get install xclip
     cb = subprocess.Popen('xclip -selection clipboard -out', shell=True, stdout=subprocess.PIPE)
     return cb.stdout.read().decode("utf-8")

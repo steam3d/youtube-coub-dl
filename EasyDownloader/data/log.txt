@@ -1,0 +1,106 @@
+[LINE:103]# ERROR    [2019-04-07 21:14:17,991]  ERROR: Incomplete YouTube ID Ez4Rd. URL https://www.youtube.com/watch?v=Ez4Rd looks truncated.
+[LINE:103]# ERROR    [2019-04-19 21:56:37,617]  ERROR: Signature extraction failed: Traceback (most recent call last):
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\youtube_dl\extractor\youtube.py", line 1225, in _decrypt_signature
+    video_id, player_url, s
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\youtube_dl\extractor\youtube.py", line 1133, in _extract_signature_function
+    res = self._parse_sig_js(code)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\youtube_dl\extractor\youtube.py", line 1200, in _parse_sig_js
+    initial_function = jsi.extract_function(funcname)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\youtube_dl\jsinterp.py", line 245, in extract_function
+    raise ExtractorError('Could not find JS function %r' % funcname)
+youtube_dl.utils.ExtractorError: Could not find JS function 'encodeURIComponent'; please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.
+ (caused by ExtractorError("Could not find JS function 'encodeURIComponent'; please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.")); please report this issue on https://yt-dl.org/bug . Make sure you are using the latest version; see  https://yt-dl.org/update  on how to update. Be sure to call youtube-dl with the --verbose flag and include its complete output.
+[LINE:110]# ERROR    [2019-04-19 22:51:02,455]  ERROR: Incomplete YouTube ID 8Y3oaS. URL https://www.youtube.com/watch?v=8Y3oaS looks truncated.
+[LINE:111]# ERROR    [2019-04-19 22:51:02,455]  cb = https://www.youtube.com/watch?v=8Y3oaS
+[LINE:100]# ERROR    [2019-04-19 23:03:03,430]  Some trouble with the icon (D:\Projects\Python\EasyDownloader\tray.png): (0, 'LoadImage', 'No error message is available')
+[LINE:100]# ERROR    [2019-04-19 23:10:07,659]  Some trouble with the icon (D:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:100]# ERROR    [2019-04-19 23:14:03,052]  Some trouble with the icon (D:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:100]# ERROR    [2019-04-19 23:41:46,399]  Some trouble with the icon (d:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:100]# ERROR    [2019-04-19 23:54:28,960]  Some trouble with the icon (d:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:382]# ERROR    [2019-04-20 00:24:05,779]  An error occurred when calling message handler
+Traceback (most recent call last):
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 378, in _dispatcher
+    uMsg, lambda w, l: 0)(wParam, lParam) or 0)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 198, in _on_notify
+    descriptors[index - 1](self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 240, in inner
+    callback(self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 327, in __call__
+    return self._action(icon, self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 415, in wrapper0
+    return action()
+  File "D:\Projects\Python\EasyDownloader\easy_downloader.pyw", line 135, in dlshow
+    subprocess.Popen("start "+dlpath, shell=True, stdout=subprocess.PIPE)
+NameError: name 'subprocess' is not defined
+[LINE:382]# ERROR    [2019-04-20 00:25:17,074]  An error occurred when calling message handler
+Traceback (most recent call last):
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 378, in _dispatcher
+    uMsg, lambda w, l: 0)(wParam, lParam) or 0)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 198, in _on_notify
+    descriptors[index - 1](self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 240, in inner
+    callback(self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 327, in __call__
+    return self._action(icon, self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 415, in wrapper0
+    return action()
+  File "D:\Projects\Python\EasyDownloader\easy_downloader.pyw", line 135, in dlshow
+    asd = subprocess.Popen("start "+dlpath, shell=True, stdout=subprocess.PIPE)
+NameError: name 'subprocess' is not defined
+[LINE:382]# ERROR    [2019-04-20 00:25:37,396]  An error occurred when calling message handler
+Traceback (most recent call last):
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 378, in _dispatcher
+    uMsg, lambda w, l: 0)(wParam, lParam) or 0)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_win32.py", line 198, in _on_notify
+    descriptors[index - 1](self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 240, in inner
+    callback(self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 327, in __call__
+    return self._action(icon, self)
+  File "C:\Users\steam\AppData\Local\Programs\Python\Python37-32\lib\site-packages\pystray\_base.py", line 415, in wrapper0
+    return action()
+  File "D:\Projects\Python\EasyDownloader\easy_downloader.pyw", line 135, in dlshow
+    asd = subprocess.Popen("start "+dlpath, shell=False, stdout=subprocess.PIPE)
+NameError: name 'subprocess' is not defined
+[LINE:106]# ERROR    [2019-05-11 13:21:29,968]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:21:29,971]  cb = https://youtu.be/6wlbB1PTzJU?list=PLzCxunOM5WFKgw0JTn80AMF4L3TlF4ohH
+[LINE:106]# ERROR    [2019-05-11 13:23:07,447]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:23:07,447]  cb = https://youtu.be/d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:25:03,748]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:25:03,748]  cb = https://youtu.be/d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:25:11,120]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:25:11,120]  cb = https://www.youtube.com/watch?v=d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:25:23,624]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:25:23,624]  cb = https://www.youtube.com/watch?v=d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:25:28,507]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:25:28,508]  cb = https://www.youtube.com/watch?v=d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:26:30,043]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:26:30,043]  cb = https://www.youtube.com/watch?v=d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:28:45,431]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:28:45,431]  cb = https://www.youtube.com/watch?v=d8DhmLCv9ls
+[LINE:106]# ERROR    [2019-05-11 13:29:43,916]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:29:43,916]  cb = https://youtu.be/d8DhmLCv9ls
+[LINE:109]# ERROR    [2019-05-11 13:30:24,591]  'NoneType' object has no attribute 'isatty'
+[LINE:100]# ERROR    [2019-05-11 13:30:24,596]  Some trouble with the icon (D:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:109]# ERROR    [2019-05-11 13:30:51,228]  'NoneType' object has no attribute 'isatty'
+[LINE:100]# ERROR    [2019-05-11 13:30:51,231]  Some trouble with the icon (D:\Projects\Python\EasyDownloader): (5, 'LoadImage', 'Отказано в доступе.')
+[LINE:106]# ERROR    [2019-05-11 13:32:13,147]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:32:13,148]  cb = https://youtu.be/CKvFTx6jefo
+[LINE:106]# ERROR    [2019-05-11 13:32:27,811]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:32:27,811]  cb = https://www.youtube.com/watch?v=Sx2gncC4yNY
+[LINE:106]# ERROR    [2019-05-11 13:37:05,287]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:37:05,287]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:42:57,100]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:42:57,101]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:01,516]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:01,516]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:04,540]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:04,540]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:07,821]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:07,821]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:10,827]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:10,827]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:16,370]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:16,370]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
+[LINE:106]# ERROR    [2019-05-11 13:43:20,342]  'NoneType' object has no attribute 'isatty'
+[LINE:107]# ERROR    [2019-05-11 13:43:20,343]  cb = https://youtu.be/KlMhPrHNKks?list=PLORupZLRmAPqfOTPaslPMO0kzex4BEzWC
