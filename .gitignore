@@ -35,3 +35,4 @@ Temporary Items
 /EasyDownloader/log.txt
 /EasyDownloader/settings.ini
 /EasyDownloader/__init__.py
+/EasyDownloader/__pycache__
