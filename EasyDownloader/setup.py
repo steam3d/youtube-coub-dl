@@ -1,8 +1,8 @@
 from setuptools import setup
 
-APP = ['menu_bar.py']
+APP = ['easy_downloader.py']
 APP_NAME = "Easy Downloader"
-DATA_FILES = ["ffmpeg", "ffprobe",'tray.png','traydl.png','app.icns']
+DATA_FILES = ["ffmpeg", "ffprobe",'tray.png','traydl.png','app.icns','app.png']
 OPTIONS = {
     'argv_emulation': True,
     'iconfile': 'app.icns',
@@ -12,8 +12,8 @@ OPTIONS = {
         'CFBundleDisplayName': APP_NAME,
         'CFBundleGetInfoString': "Download from Youtube and Coub",
         'CFBundleIdentifier': "com.steam3d.osx.ed",
-        'CFBundleVersion': "0.1.1",
-        'CFBundleShortVersionString': "0.1.1",
+        'CFBundleVersion': "0.1.5",
+        'CFBundleShortVersionString': "0.1.5",
         'NSHumanReadableCopyright': u"The program is written by Alexander Maslov"        
     },
     'packages': ['pystray','pync'],

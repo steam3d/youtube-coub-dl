@@ -1,2 +1,2 @@
-def notification(title,text,execute):
+def notification(title='',text='',execute='',icon=''):
     pass

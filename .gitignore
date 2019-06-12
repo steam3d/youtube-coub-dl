@@ -29,3 +29,9 @@ Temporary Items
 
 
 # End of https://www.gitignore.io/api/osx
+
+/EasyDownloader/easydownloader.pyw
+/EasyDownloader/log.txt
+/EasyDownloader/log.txt
+/EasyDownloader/settings.ini
+/EasyDownloader/__init__.py
