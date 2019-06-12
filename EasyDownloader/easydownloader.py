@@ -14,7 +14,7 @@ dlpath = iconPath = ffmpegpath = os.getcwdb().decode("utf-8")  # deafult ffmpeg 
 fnMask = '/%(title)s-%(id)s.%(ext)s'
 menuItems = ['Quit', 'Cancel', ['Audio', 'mp3', 0, 'Audio'], ['Video', 'mp4', 0, 'Video'],
              ['Au+vi', 'mp4+mp3', 0, 'Au+vi'], 'Folder']
-
+fprog = ''  # fix later
 def pasteClipboard():  # linux has a problem with pyperclip. Need to use the xclip. #sudo apt-get install xclip
     cb = subprocess.Popen('xclip -selection clipboard -out', shell=True, stdout=subprocess.PIPE)
     return cb.stdout.read().decode("utf-8")
@@ -54,6 +54,7 @@ if sys.platform == 'win32':
     traydl = 'wintraydl.png'
     tray = 'wintray.png'
     ico = 'wintray.ico'
+    fprog = 'start '  # open through exploler
 if sys.platform == 'linux':
     from linux_notification import notification
     import subprocess
@@ -131,7 +132,8 @@ def on_clicked(icon, status, opts):
         # rumps.quit_application()
 
 def dlshow():
-    global dlpath
+    global dlpath, fprog
+    os.system(fprog + dlpath)
     notification(title='Download folder', text=dlpath, execute="open "+dlpath, icon = ico)
 
 
