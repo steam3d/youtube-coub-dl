@@ -18,7 +18,7 @@ Easy downloader has standalone app for mac. For windows and linux there is only 
 
 ## [Download Easy Downloader for MAC](https://github.com/steam3d/youtube-coub-dl-mac/releases)
 
-## How to create a program from source files for MAC
+## How to create a program from source files for MAC and WINDOWS
 To install it use a py2app package
 
 	pip3 install py2app
