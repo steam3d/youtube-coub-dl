@@ -1,18 +1,41 @@
 import os, pyperclip, dl, sys, logging
+import dlffmpeg
 from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 from threading import Thread
 
-
-
 # sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), 'FilesDate'))
 
-dlpath = iconPath = ffmpegpath = os.getcwdb().decode("utf-8")  # deafult ffmpeg path is folder with app
-dlpath = ffmpegpath = iconPath = os.path.join(iconPath, 'data')
+dlpath = ffmpegpath = iconPath = os.path.join(os.getcwd(), 'data')
 fnMask = '/%(title)s-%(id)s.%(ext)s'
-menuItems = ['Quit', 'Cancel', ['Audio', 'mp3', 0, 'Audio'], ['Video', 'mp4', 0, 'Video'],
-             ['Au+vi', 'mp4+mp3', 0, 'Au+vi'], 'Folder']
 fprog = ''  # fix later
+
+menuItems = ['Quit', 'Cancel', ['Only Audio', 'mp3', 0, 'Only Audio'], ['Only Video', 'mp4', 0, 'Only Video'],
+             ['Audio+Video', 'mp4+mp3', 0, 'Audio+Video'], 'Download folder']
+# for languages
+msg = [['Download error', 'The clipboard does not have an youtube or coub link'],
+       ['Error', "Can't get file name. Check Donwloads folder"],
+       ['Download complete', ''],
+       ['Download error', 'The clipboard has a broken link'],
+       ['Download folder', ''],
+       ['Downloading ffmpeg', 'Please wait until the download is complete'],
+       ['Downloading error', 'Something went wrong'],
+       ['Download complete', 'Running the app']]
+
+def setlanguage(p):
+    global menuItems, msg
+    with open(p, 'r',  encoding="utf-8") as f:
+        data = f.readlines()
+        data = [line.rstrip() for line in data]
+        data = [line.split(';') for line in data]
+    for i in range(len(menuItems)):
+        if type(menuItems[i]) is list:
+            menuItems[i][0] = menuItems[i][3] = data[0][i]
+        else:
+            menuItems[i] = data[0][i]
+    data.pop(0)
+    for i in range(len(msg)):
+        msg[i] = data[i]
 
 # Output settings
 logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
@@ -28,16 +51,20 @@ def notification(title='',text='',execute='',icon=''):
 
 def dlfolder():
     global dlpath
-    if os.path.exists(os.path.join(dlpath,"settings.ini")):
-        data = []
-        f = open((os.path.join(dlpath,"settings.ini")), 'r')
-        for s in f:
-            data.append(s)
-        f.close()
-        dlpath = os.path.join(data[0], 'EasyDownloader')
-    else:
-        dlpath = os.path.expanduser('~/Downloads')
-        dlpath = os.path.join(dlpath, 'EasyDownloader')
+    try:
+        if os.path.exists(os.path.join(dlpath,"settings.ini")):
+            data = []
+            f = open((os.path.join(dlpath,"settings.ini")), 'r')
+            for s in f:
+                data.append(s)
+            f.close()
+            dlpath = os.path.join(data[0], 'EasyDownloader')
+        else:
+            dlpath = os.path.expanduser('~/Downloads')
+            dlpath = os.path.join(dlpath, 'EasyDownloader')
+            if not os.path.isdir(dlpath): os.mkdir(dlpath)
+    except:
+        dlpath = os.path.join(os.getcwd(), 'EasyDownloader')
         if not os.path.isdir(dlpath): os.mkdir(dlpath)
     return dlpath
 
@@ -62,14 +89,31 @@ if sys.platform == 'win32':
 if sys.platform == 'linux':
     from linux_notification import notification
     import subprocess
-
     pyperclip.paste = pasteClipboard
     traydl = 'wintraydl.png'
     tray = 'wintray.png'
     ico = ''
-    ffmpegpath = '/usr/bin/ffmpeg'  # program folder path for icons and ffmpeg
+    ffmpegpath = '/usr/bin/ffmpeg'  #ffmpeg
 
 ico = os.path.join(iconPath, ico) #make
+
+if os.path.exists(os.path.join(iconPath, "lang.txt")): setlanguage(os.path.join(iconPath, "lang.txt"))
+
+# download ffmpeg
+if os.path.exists(ffmpegpath):
+    if len(os.listdir(ffmpegpath)) == 0:
+        notification(title=msg[5][0], text=msg[5][1], icon=ico)
+        if dlffmpeg.dlffmpeg(ffmpegpath):
+            notification(title=msg[7][0], text=msg[7][1], icon=ico)
+        else:
+            notification(title=msg[6][0], text=msg[6][1], icon=ico)
+else:
+    os.mkdir(ffmpegpath)
+    notification(title=msg[5][0], text=msg[5][1], icon=ico)
+    if dlffmpeg.dlffmpeg(ffmpegpath):
+        notification(title=msg[7][0], text=msg[7][1], icon=ico)
+    else:
+        notification(title=msg[6][0], text=msg[6][1], icon=ico)
 
 
 class Logger:
@@ -102,15 +146,15 @@ def predl(icon, opts, status, cb):
     try:
         fn = dl.dl(cb, ffmpegpath, opts, dlpath + fnMask)
         if fn == '':
-            notification(title='Error', text="Can't get file name. Check Donwloads folder", execute=False, icon=ico)
+            notification(title=msg[1][0], text=msg[1][1], execute=False, icon=ico)
         else:
             fn = fn[len(dlpath) + 1:]
-            notification(title='Download complete', text=fn, execute="open " + dlpath + "/" + "'" + fn + "'", icon=ico)
+            notification(title=msg[2][0], text=fn, execute="open " + dlpath + "/" + "'" + fn + "'", icon=ico)
         complete(icon, status)
     except Exception as e:
         logging.error(e)
         logging.error("cb = {0}".format(cb))
-        notification(title='Download error', text='The clipboard has a broken link', execute=False, icon=ico)
+        notification(title=msg[3][0], text=msg[3][1], execute=False, icon=ico)
         complete(icon, status)
 
 
@@ -128,17 +172,19 @@ def on_clicked(icon, status, opts):
             Thread(target=predl, args=(icon, opts, status, cb)).start()
         else:
             complete(icon, status)
-            notification(title='Download error', text='The clipboard does not have an youtube or coub link',
-                         execute=False, icon = ico)
+            notification(title=msg[0][0], text=msg[0][1],
+                         execute=False, icon=ico)
     else:
         pass
         # Thread(target=restart, args=()).start()
         # rumps.quit_application()
 
 def dlshow():
-    global dlpath, fprog
-    os.system(fprog + dlpath)
-    notification(title='Download folder', text=dlpath, execute="open "+dlpath, icon = ico)
+    global dlpath, fprog, msg
+    if sys.platform == 'win32':
+        os.system(fprog + dlpath)
+
+    notification(title=msg[4][0], text=dlpath, execute="open "+dlpath, icon=ico)
 
 
 
