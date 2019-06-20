@@ -59,13 +59,13 @@ def dlfolder():
                 data.append(s)
             f.close()
             dlpath = os.path.join(data[0], 'EasyDownloader')
+            if not os.path.isdir(dlpath): os.mkdir(dlpath)
         else:
             dlpath = os.path.expanduser('~/Downloads')
             dlpath = os.path.join(dlpath, 'EasyDownloader')
             if not os.path.isdir(dlpath): os.mkdir(dlpath)
     except:
-        dlpath = os.path.join(os.getcwd(), 'EasyDownloader')
-        if not os.path.isdir(dlpath): os.mkdir(dlpath)
+        dlpath = os.path.join(os.getcwd())
     return dlpath
 
 
@@ -85,7 +85,7 @@ if sys.platform == 'win32':
     traydl = 'wintraydl.png'
     tray = 'wintray.png'
     ico = 'wintray.ico'
-    fprog = 'start '  # open through exploler
+    fprog = 'start "" '  # open through exploler
 if sys.platform == 'linux':
     from linux_notification import notification
     import subprocess
@@ -182,10 +182,9 @@ def on_clicked(icon, status, opts):
 def dlshow():
     global dlpath, fprog, msg
     if sys.platform == 'win32':
-        os.system(fprog + dlpath)
+        os.system(fprog + '"{}"'.format(dlpath))
 
     notification(title=msg[4][0], text=dlpath, execute="open "+dlpath, icon=ico)
-
 
 
 def close():

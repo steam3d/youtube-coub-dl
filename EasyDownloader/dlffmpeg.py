@@ -5,6 +5,22 @@ import tempfile
 import shutil
 import platform
 import sys
+import ssl
+
+
+# Save chmod rules
+class Zip(zipfile.ZipFile):
+    def extract(self, member, path=None, pwd=None):
+        if not isinstance(member, zipfile.ZipInfo):
+            member = self.getinfo(member)
+
+        if path is None:
+            path = os.getcwd()
+
+        ret_val = self._extract_member(member, path, pwd)
+        attr = member.external_attr >> 16
+        os.chmod(ret_val, attr)
+        return ret_val
 
 
 def dlffmpeg(ffmpegpath=os.getcwd()):
@@ -22,12 +38,14 @@ def dlffmpeg(ffmpegpath=os.getcwd()):
         print("For linux try 'apt-get install ffmpeg'")
         return False
 
+    context = ssl._create_unverified_context()
+
     url = 'https://ffmpeg.zeranoe.com/builds/{0}/static/'.format(ver)
     sort = '?C=M&O=D'
     req = Request(url+sort, headers={'User-Agent': 'Mozilla/5.0'})
 
     try:
-        webpage = urlopen(req).read()
+        webpage = urlopen(req,context=context).read()
     except Exception as e:
         print(e)
         return False
@@ -45,13 +63,13 @@ def dlffmpeg(ffmpegpath=os.getcwd()):
         tmpfile = os.path.join(tmpdir, name)
         with open(tmpfile, 'wb') as f:
             try:
-                f.write(urlopen(req).read())
+                f.write(urlopen(req,context=context).read())
             except Exception as e:
                 print(e)
                 return False
 
         if os.path.exists(tmpfile):
-            with zipfile.ZipFile(tmpfile, "r") as zip:
+            with Zip(tmpfile, "r") as zip:
                 for file in zip.namelist():
                     if file.startswith(name[:-4] + '/bin/'):
                         zip.extract(file, tmpdir)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 APP = ['easy_downloader.py']
 APP_NAME = "Easy Downloader"
-DATA_FILES = ["ffmpeg", "ffprobe",'tray.png','traydl.png','app.icns','app.png']
+DATA_FILES = ['data']
 OPTIONS = {
     'argv_emulation': True,
     'iconfile': 'app.icns',
