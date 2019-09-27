@@ -1,4 +1,4 @@
-import os, pyperclip, dl, sys, logging
+import os, pyperclip, dl, sys, logging, subprocess
 import dlffmpeg
 from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
@@ -9,6 +9,7 @@ from threading import Thread
 dlpath = ffmpegpath = iconPath = os.path.join(os.getcwd(), 'data')
 fnMask = '/%(title)s-%(id)s.%(ext)s'
 fprog = ''  # fix later
+#fprog = 'start "" '  # fix later
 
 menuItems = ['Quit', 'Cancel', ['Only Audio', 'mp3', 0, 'Only Audio'], ['Only Video', 'mp4', 0, 'Only Video'],
              ['Audio+Video', 'mp4+mp3', 0, 'Audio+Video'], 'Download folder']
@@ -136,6 +137,7 @@ def complete(icon, status):
         menuItems[status][2] = 0
         menuItems[status][0] = menuItems[status][3]
         m = 0
+
         for i in menuItems:
             if i[2] == 1: m = 1
         if m == 0: icon.icon = Image.open(os.path.join(iconPath, tray))
@@ -165,11 +167,14 @@ def on_clicked(icon, status, opts):
 
         cb = pyperclip.paste()
 
+        # cb = 'https://youtu.be/plv1gcRcix8'
         # cb = 'https://www.youtube.com/watch?v=COwlqqErDbY'
         # cb = 'https://coub.com/view/1ade1p'
         error = dl.fastcheckcb(cb)
         if error == 0:
-            Thread(target=predl, args=(icon, opts, status, cb)).start()
+            t = Thread(target=predl, args=(icon, opts, status, cb))
+            t.daemon = True
+            t.start()
         else:
             complete(icon, status)
             notification(title=msg[0][0], text=msg[0][1],
@@ -182,9 +187,11 @@ def on_clicked(icon, status, opts):
 def dlshow():
     global dlpath, fprog, msg
     if sys.platform == 'win32':
-        os.system(fprog + '"{}"'.format(dlpath))
-
-    notification(title=msg[4][0], text=dlpath, execute="open "+dlpath, icon=ico)
+        #subprocess.Popen(fprog + '"{}"'.format(dlpath), shell=False, creationflags=0x08000000)
+        subprocess.Popen('explorer "%s"'%(dlpath), shell=False)
+        #os.system(fprog + '"{}"'.format(dlpath))
+    else:
+        notification(title=msg[4][0], text=dlpath, execute="open "+dlpath, icon=ico)
 
 
 def close():
@@ -199,11 +206,14 @@ icon = Icon("name",
                 item(lambda title: menuItems[3][0], lambda icon: on_clicked(icon, 3, menuItems[3][1]),
                      checked=lambda item: menuItems[3][2]),
                 item(lambda title: menuItems[4][0], lambda icon: on_clicked(icon, 4, menuItems[4][1]),
-                     checked=lambda item: menuItems[4][2]),
+                     checked=lambda item: menuItems[4][2], default=True),
                 menu.SEPARATOR,
                 item(lambda title: menuItems[5], dlshow),
                 menu.SEPARATOR,
                 item(lambda title: menuItems[0], close)
             )
             )
-icon.run()
+icon.HAS_DEFAULT_ACTION = True
+
+if __name__ == '__main__':
+    icon.run()
