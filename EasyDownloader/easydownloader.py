@@ -15,6 +15,26 @@ from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 from threading import Thread
 
+
+class ProxySubprocessPopen(subprocess.Popen):# Fix showing console on windows
+
+    if (sys.platform == "win32"):
+        # noinspection PyUnresolvedReferences
+        def _execute_child(self, args, executable, preexec_fn, close_fds,
+                           cwd, env, universal_newlines,
+                           startupinfo, *kwargs):
+            if startupinfo is None:
+                startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags = 1
+            startupinfo.wShowWindow = 0
+            super(ProxySubprocessPopen, self)._execute_child(args, executable, preexec_fn, close_fds,
+                                                             cwd, env, universal_newlines,
+                                                             startupinfo, *kwargs)
+
+
+subprocess.Popen = ProxySubprocessPopen
+
+
 # sys.path.append(os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), 'FilesDate'))
 
 dlpath = ffmpegpath = iconPath = os.path.join(os.getcwd(), 'data')
@@ -296,7 +316,7 @@ def dlshow():
     global dlpath, fprog, msg
     if sys.platform == 'win32':
         #subprocess.Popen(fprog + '"{}"'.format(dlpath), shell=False, creationflags=0x08000000)
-        subprocess.Popen('explorer "%s"'%(dlpath), shell=False)
+        subprocess.Popen('explorer "%s"'%(dlpath), shell=True)
         #os.system(fprog + '"{}"'.format(dlpath))
     else:
         notification(title=msg[4][0], text=dlpath, execute="open "+dlpath, icon=ico)
