@@ -1,10 +1,13 @@
 from __future__ import unicode_literals
-import youtube_dl, os
+import youtube_dl
+import os
 
 msg = ''
+
+
 def prnt(msg):
     pass
-    print(bytes(msg, 'utf-8'))
+    #print(bytes(msg, 'utf-8'))
 
 
 from exceptions import TerminateThreadException
@@ -15,30 +18,24 @@ def isurl(cb):
     if ('https://' in cb) or ('http://' in cb): return True
     return False
 
-def fastcheckcb(cb):
-    if cb == None: cb='None'
-    if ('https://youtu.be/' in cb) or ('https://www.youtube.com/' in cb) or ('https://coub.com/' in cb) or ('https://vimeo.com/' in cb) or ('https://www.pornhub.com' in cb) or ('https://www.instagram.com' in cb):
-        error = 0
-    else:
-        error = 1
-    return error
 
-def coubFix(fn): #Fix for coub video
+def coubfix(fn):  # Fix for coub video
     with open(fn,'rb') as f:
         data = f.read()
     with open(fn, 'wb') as f:
         f.write(b'\x00\x00' + data[2:])
 
-def dl(cb,ffmpegPath,opts,dlPath, signal=[False],add_to_opts=None):
-    fn=''
+
+def dl(cb, ffmpegpath, opts, dlpath, signal=[False], add_to_opts=None):
+    fn = ''  # file name from download URL
+
     class MyLogger(object):
         def __init__(self, signal):
             self.signal = signal
 
         def debug(self, msg):
-            print('signal',signal)
             if self.signal[0] == True:
-                raise TerminateThreadException('Killed','kill')
+                raise TerminateThreadException('Exit', 'Thread was killed')
             prnt(msg)
 
         def warning(self, msg):
@@ -48,17 +45,16 @@ def dl(cb,ffmpegPath,opts,dlPath, signal=[False],add_to_opts=None):
             prnt(msg)
 
     def my_hook(d):
-            pass
-            #prnt(d)
+        pass
             #if d['status'] == 'finished':
             #    msg = 'Done downloading, now converting ...'
             #    prnt(msg)
 
     options = {
         'mp3': {'nocheckcertificate': True,
-                'outtmpl': dlPath,
+                'outtmpl': dlpath,
                 'forcefilename': False,
-                'ffmpeg_location': ffmpegPath,
+                'ffmpeg_location': ffmpegpath,
                 'format': 'bestaudio/best',
                 'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -69,8 +65,8 @@ def dl(cb,ffmpegPath,opts,dlPath, signal=[False],add_to_opts=None):
                  'progress_hooks': [my_hook],
                  },
         'mp4': {'nocheckcertificate': True,
-                'outtmpl': dlPath,
-                'ffmpeg_location': ffmpegPath,
+                'outtmpl': dlpath,
+                'ffmpeg_location': ffmpegpath,
                 'forcefilename': True,
                 'format': 'bestvideo/best',
                 'postprocessors': [{
@@ -81,8 +77,8 @@ def dl(cb,ffmpegPath,opts,dlPath, signal=[False],add_to_opts=None):
                 'progress_hooks': [my_hook],
                 },
         'mp4+mp3': {'nocheckcertificate': True,
-                'outtmpl': dlPath,
-                'ffmpeg_location': ffmpegPath,
+                'outtmpl': dlpath,
+                'ffmpeg_location': ffmpegpath,
                 'forcefilename': True,
                 'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
                 'logger': MyLogger(signal),
@@ -91,24 +87,26 @@ def dl(cb,ffmpegPath,opts,dlPath, signal=[False],add_to_opts=None):
         }
     if add_to_opts != None:
         if type(add_to_opts) == dict:
-                options[opts].update(add_to_opts)
+            options[opts].update(add_to_opts)
 
-    with youtube_dl.YoutubeDL(options[opts]) as ydl:
-        ydl.download([cb])
-        info_dict = ydl.extract_info(cb, download=False)
-        fn = ydl.prepare_filename(info_dict)
+    if isurl(cb):
+        with youtube_dl.YoutubeDL(options[opts]) as ydl:
+            ydl.download([cb])
+            info_dict = ydl.extract_info(cb, download=False)
+            fn = ydl.prepare_filename(info_dict)
 
-    if ('https://coub.com/' in cb) and ('mp4' in opts): coubFix(fn)
+        if ('https://coub.com/' in cb) and ('mp4' in opts): coubfix(fn)
     return fn
 
+
 if __name__ == "__main__":
-    dlPath = '/Users/steam3d/Downloads/%(title)s-%(id)s.%(ext)s'
-    dlPath = 'd:\Other\EasyDownloader/%(title)s-%(id)s.%(ext)s'
-    ffmpegPath = os.getcwdb().decode("utf-8")
-    ffmpegPath = 'D:\Projects\Python\GitHub\youtube-coub-dl\EasyDownloader\data\wffmpeg'
+    ffmpegpath = os.getcwdb().decode("utf-8")
+    dlPath = ffmpegpath + '/%(title)s-%(id)s.%(ext)s'
+
     cb = 'https://www.youtube.com/watch?v=zZohSJyYknY'
-    print(dl(cb,ffmpegPath,'mp4+mp3',dlPath))
+    print(dl(cb, ffmpegpath, 'mp4+mp3', dlPath))
+
     cb = 'https://coub.com/view/1aa6m1'
-    print(dl(cb,ffmpegPath,'mp4',dlPath))
+    print(dl(cb, ffmpegpath, 'mp4', dlPath))
 
 
