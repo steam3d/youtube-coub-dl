@@ -15,6 +15,7 @@ from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 from threading import Thread
 
+debugmode = False
 
 class ProxySubprocessPopen(subprocess.Popen):  # Fix showing console on windows
 
@@ -61,7 +62,7 @@ def setlanguage(p):
         data = [line.split(';') for line in data]
     for i in range(len(menu_items)):
         if type(menu_items[i]) is list:
-            #menuItems[i][0] = menuItems[i][3] = data[0][i]
+            #menuItems[i][0] = menuItems[i][3] = data[0][i]  # watch complete
             menu_items[i][0] = data[0][i]
         else:
             menu_items[i] = data[0][i]
@@ -70,10 +71,15 @@ def setlanguage(p):
         msg[i] = data[i]
 
 
-# log
-logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
-                    level=logging.ERROR,
-                    filename=os.path.join(os.path.dirname(__file__), os.path.join(iconPath, 'log.txt')))
+
+if debugmode:
+    logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                        level=logging.DEBUG)
+else:
+    logging.basicConfig(format='[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s',
+                        level=logging.ERROR,
+                        filename=os.path.join(os.path.dirname(__file__), os.path.join(iconPath, 'log.txt')))
+
 
 
 def pasteclipboard():  # linux has a problem with pyperclip. Need to use the xclip. #sudo apt-get install xclip
@@ -97,11 +103,29 @@ def dlfolder():
             dlpath = os.path.join(data[0], 'EasyDownloader')
             if not os.path.isdir(dlpath): os.mkdir(dlpath)
         else:
-            dlpath = os.path.expanduser('~/Downloads')
-            dlpath = os.path.join(dlpath, 'EasyDownloader')
-            if not os.path.isdir(dlpath): os.mkdir(dlpath)
-    except:
+            if sys.platform == 'darwin':
+                dlpath = os.path.join(os.path.expanduser('~'), 'Downloads')
+
+            if sys.platform == 'win32':
+                cmd = r'reg query "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" /v {374DE290-123F-4565-9164-39C4925E467B}'
+                p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+                #output = p.communicate()  # replace to 'output,err' - to recive erors, or add code rc = p.returncode
+                output = p.stdout.read()
+                output = output.decode('UTF-8')
+                output = output[output.rfind(' ') + 1:]  # output has some space separated words. The last word is path.
+                output = output.rstrip()  # delete line break
+                print(output)
+                if '%USERPROFILE%' in output:
+                    output = output[output.rfind('\\') + 1:]
+                    dlpath = os.path.join(os.path.expanduser('~'), output)
+                else:
+                    dlpath = output
+                dlpath = os.path.join(dlpath, 'EasyDownloader')
+            if not os.path.isdir(dlpath):os.mkdir(dlpath)
+    except Exception as e:
+        logging.error(e)
         dlpath = os.path.join(os.getcwd())
+    logging.debug('set dlpath to {}'.format(dlpath))
     return dlpath
 
 
