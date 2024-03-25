@@ -57,6 +57,22 @@ Notification for windows
 
 Download ffmpeg and put it to folder with script
 
+## Build
+
+Using PyInstaller Windows
+
+	pyinstaller easydownloader.spec --onefile
+
+Using p2app Mac
+
+	Not written yet 
+ 
+### p2app issue: Header Mach-O too large
+
+Remove files from this folder which cause the error
+
+	/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/PIL/.dylibs/
+
 ## What packages were used
 
 * [pyperclip](https://github.com/asweigart/pyperclip)
